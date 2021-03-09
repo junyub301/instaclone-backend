@@ -9,15 +9,20 @@ Instaclone Backend.
 -   [ X ] Login
 -   [ X ] Edit Profile
 -   [ X ] CHange Avatar (Image Upload)
--   [ ] Follow User
--   [ ] Unfollow User
--   [ ] Search Users
--   [ ] See Followers
--   [ ] See Follwing
+-   [ x ] Follow User
+-   [ x ] Unfollow User
+-   [ x ] See Followers with Paginataion
+-   [ x ] See Follwing with Paginataion
+-   [ x ] Computed Fields
+-   [ x ] Search Users
 
 ## Photos
 
 -   [ ] See Photo
 -   [ ] Upload Photo
 -   [ ] Edit Photo
--   [ ] Link / Unlike Photo
+-   [ ] Like / Unlike Photo
+-   [ ] See Photo Likes
+-   [ ] See Feed
+-   [ ] Search Photos
+-   [ ] See Hashtags
