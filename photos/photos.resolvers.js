@@ -1,4 +1,4 @@
-import client from "../../client";
+import client from "../client";
 
 export default {
     Photo: {
@@ -11,7 +11,14 @@ export default {
                     },
                 },
             }),
-        likes: ({ id }) => client.photo.count({ where: { photoId: id } }),
+        likes: ({ id }) => client.like.count({ where: { photoId: id } }),
+        comments: ({ id }) => client.comment.count({ where: { photoId: id } }),
+        isMine: ({ userId }, _, { loggedInUser }) => {
+            if (!loggedInUser) {
+                return false;
+            }
+            return userId === loggedInUser.id;
+        },
     },
     Hashtag: {
         photos: ({ id }, { page }, { loggedInUser }) => {

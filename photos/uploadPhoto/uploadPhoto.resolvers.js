@@ -1,6 +1,6 @@
-import { protectedResolver } from "../../../users/users.utils";
-import client from "../../../client";
-import { processHashtags } from "../editPhoto/photos.utils";
+import { processHashtags } from "../photos.utils";
+import { protectedResolver } from "../../users/users.utils";
+import client from "../../client";
 
 export default {
     Mutation: {

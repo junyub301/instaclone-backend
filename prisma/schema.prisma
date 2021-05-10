@@ -25,6 +25,7 @@ model User {
   following User[]   @relation("FollowRelation", references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  comments  Comment[]
 }
 
 model Photo {
@@ -37,6 +38,7 @@ model Photo {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   likes     Like[]
+  comments  Comment[]
 }
 
 
@@ -60,4 +62,15 @@ model Like {
   updatedAt DateTime @updatedAt
 
   @@unique([photoId,userId])
+}
+
+model Comment {
+  id        Int      @id @default(autoincrement())
+  user      User     @relation(fields: [userId], references:[id])
+  photo     Photo    @relation(fields: [photoId], references:[id])
+  payload   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    Int
+  photoId   Int
 }

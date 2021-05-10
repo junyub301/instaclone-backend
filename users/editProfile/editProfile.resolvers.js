@@ -1,6 +1,6 @@
-import { createWriteStream } from "fs";
 import bcrypt from "bcrypt";
 import client from "../../client";
+import { uploadPhoto } from "../../shared/shared.utils";
 import { protectedResolver } from "../users.utils";
 
 export default {
@@ -21,6 +21,8 @@ export default {
             ) => {
                 let avatarUrl = null;
                 if (avatar) {
+                    avatarUrl = await uploadPhoto(avatar, loggedInUser.id);
+                    /* 서버에 파일 저장
                     const { filename, createReadStream } = await avatar;
                     const newFilename = `${
                         loggedInUser.id
@@ -30,7 +32,8 @@ export default {
                         process.cwd() + "/uploads/" + newFilename
                     );
                     readStream.pipe(writeStream);
-                    avatarUrl = `http://localhost:4000/static/${newFilename}`;
+                    avatarUrl = `http://localhost:4000/static/${newFilename}`; 
+                    */
                 }
                 let uglyPassword = null;
                 if (newPassword) {
