@@ -130,8 +130,8 @@ yarn add dotenv
 </details>
 
 ## ERROR
-apollo-server fileupload 부분에서 아래와 같은 에러 발생
-fs를 통해 file readStream을 수행한 후 전송 했을 경우에는 발생하지 않았음.
+- apollo-server fileupload 부분에서 아래와 같은 에러 발생
+- fs를 통해 file readStream을 수행한 후 전송 했을 경우에는 발생하지 않았음.
 ```shell
 (node:53998) [DEP0135] DeprecationWarning: ReadStream.prototype.open() is deprecated
 
