@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
 import client from "../../client";
-import { uploadPhoto } from "../../shared/shared.utils";
+import { uploadToS3 } from "../../shared/shared.utils";
 import { protectedResolver } from "../users.utils";
 
 export default {
@@ -21,7 +21,11 @@ export default {
             ) => {
                 let avatarUrl = null;
                 if (avatar) {
-                    avatarUrl = await uploadPhoto(avatar, loggedInUser.id);
+                    avatarUrl = await uploadToS3(
+                        avatar,
+                        loggedInUser.id,
+                        "avatars"
+                    );
                     /* 서버에 파일 저장
                     const { filename, createReadStream } = await avatar;
                     const newFilename = `${
