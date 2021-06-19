@@ -128,3 +128,31 @@ yarn add dotenv
 -   [ ] S3 Image Upload
 
 </details>
+
+## ERROR
+apollo-server fileupload 부분에서 아래와 같은 에러 발생
+fs를 통해 file readStream을 수행한 후 전송 했을 경우에는 발생하지 않았음.
+```shell
+(node:53998) [DEP0135] DeprecationWarning: ReadStream.prototype.open() is deprecated
+
+(Use node --trace-deprecation ...to show where the warning was created)
+```
+원인 : node.js v.14이후로 나오는 에러..
+
+해결 방법
+```json
+// package.json
+// 1. 맨 아래에 추가 
+"resolutions": {
+    "fs-capacitor": "^6.2.0",
+    "graphql-upload": "^11.0.0"
+  }
+  
+// 2. preinstall script 생성 
+
+"preinstall":"npx npm-force-resolutions"
+``` 
+[pakage.json]
+1. 위와 같이 package.json에 추가후 node_modules 삭제
+2. ```shell npm cache clean --force``` 명령어 실행으로 캐시 초기화
+3. ```shell npm i ``` 실행
