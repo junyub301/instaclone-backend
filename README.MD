@@ -85,6 +85,158 @@ yarn add dotenv
 
 </details>
 
+## Babel 설정
+1. babel.config.json 파일 생성 후 아래 코드 추가
+```json
+{
+  "presets": ["@babel/preset-env"]
+}
+```
+2. package.json script 수정
+```json
+"script": {
+	"dev" : "nodemone --exec babel-node index"
+}
+```
+
+## Apollo server 
+-예제
+```javascript
+import{ ApolloServer, gql } from 'apollo-server';
+// const { ApolloServer, gql } = require('apollo-server'); 위와 같이 대체 
+// 단, node 버전이 맞지 않으면 오류가 남 => bable 설치!
+
+// The GraphQL schema
+const typeDefs = gql`
+  type Query {
+    "A simple type for getting started!"
+    hello: String
+  }
+`;
+
+// A map of functions which return data for the schema.
+const resolvers = {
+  Query: {
+    hello: () => 'world',
+  },
+};
+
+const server = new ApolloServer({
+  typeDefs,
+  resolvers,
+});
+
+server.listen().then(({ url }) => {
+  console.log(`🚀 Server ready at ${url}`);
+});
+
+```
+
+## Prisma
+- ```shell npx prisma init ``` 명령어 실행 => prisma/schema.prisma & .evn 파일 생성
+- .env 파일에 Database 설정
+```env
+DATABASE_URL = 'postgresql://USER:PASSWORD@HOST:PORT/DATABASE?schema=SCHEMA'
+ex)
+DATABASE_URL = 'postgresql://janedoe:janedoe@localhost:5432/janedoe?schema=hello-prisma'
+```
+  - **`USER`**: The name of your database user
+  - **`PASSWORD`**: The password for your database user
+  - **`PORT`**: The port where your database server is running (typically **`5432`** for PostgreSQL)
+  - **`DATABASE`**: The name of the [database](https://www.postgresql.org/docs/12/manage-ag-overview.html)
+  - **`SCHEMA`**: The name of the [schema](https://www.postgresql.org/docs/12/ddl-schemas.html) inside the database
+
+- prisma/schema.prisma파일 예제
+```prisma
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id      Int      @default(autoincrement()) @id
+  email   String   @unique
+  name    String?
+  posts   Post[]
+  profile Profile?
+}
+
+```
+타입에 ?가 붙으면 unrequired 붙지 않으면 required로 설정
+
+- 데이터 베이스에 User 테이블 생성
+- 명령창에 아래 코드 실행
+```shell
+npx prisma migrate dev init 
+```
+## Prisma client
+- 예제
+```javascript
+import { PrismaClient } from '@prisma/client'
+
+const prisma = new PrismaClient();
+
+const userAccount = async ({name,email}) => {
+	await prisma.user.create({
+    data: {
+      name,
+      email,
+      posts: {
+        create: { title: 'Hello World' },
+      },
+      profile: {
+        create: { bio: 'I like turtles' },
+      },
+    },
+  })
+}
+
+
+const allUsers = async () => {
+	await prisma.user.findMany({
+    include: {
+      posts: true,
+      profile: true,
+    },
+  })
+}
+```
+- prisma client 조건 및 사용법 참조
+- Link: **https://www.prisma.io/docs/concepts/components/prisma-client/crud**
+
+## graphql-tools
+- 같은 패턴의 이름을 가진 파일을 한번에 찾아 merge 시킬 수 있다.
+- 예제
+```javascript
+import  {loadFilesSync,mergeTypeDefs, mergeResolvers} from 'graphql-tools';
+
+
+const loadedTypeDefs = loadFilesSync(`${__dirname}/**/*.typeDefs.js`);
+const typeDefs = mergeTypeDefs(loadedTypeDefs );
+
+const loadedResolvers = loadFilesSync(`${__dirname}/**/*.{queries,mutations}.js`);
+const resolvers = mergeResolvers(loadedResolvers );
+
+const schema = makeExecutableSchema({typeDefs,resolvers});
+```
+
+## dotenv
+- .env파일을 읽을 수 있다.
+- 가장 상위 폴더에 선언해 준다.
+- 사용법
+```js
+require('dotenv').config()
+import ...
+...
+...
+
+const PORT = process.env.PORT;
+```
+
 ## API 목록
 
 <details>
