@@ -100,7 +100,7 @@ yarn add dotenv
 ```
 
 ## Apollo server 
--예제
+- 예제
 ```javascript
 import{ ApolloServer, gql } from 'apollo-server';
 // const { ApolloServer, gql } = require('apollo-server'); 위와 같이 대체 
