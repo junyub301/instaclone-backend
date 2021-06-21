@@ -115,7 +115,7 @@ yarn add dotenv
 -   [x] See Photo Likes
 -   [ ] See Photo Comments
 -   [x] See Feed
--   [x] Is Mine (Delte Photo)
+-   [x] Delte Photo
 
 </details>
 <details>
@@ -123,7 +123,7 @@ yarn add dotenv
 
 -   [x] Comment on Photo
 -   [x] Edit Comment
--   [x] Delete Comment (Is Mine)
+-   [x] Delete Comment
 </details>
 <details>
 <summary>Refactor</summary>
@@ -135,6 +135,17 @@ yarn add dotenv
 <summary>Extras</summary>
   
 -   [x] S3 Image Upload
+
+</details>
+<details>
+<summary>DMs</summary>
+  
+-    [ ] See Rooms
+-    [ ] Send Message (Create Room)
+-    [ ] See Room
+-    [ ] Computed Fields
+-    [ ] See (Read) Message
+-    [ ] Realtime Messages
 
 </details>
 
