@@ -136,6 +136,81 @@ server.listen().then(({ url }) => {
     console.log(`🚀 Server ready at ${url}`);
 });
 ```
+- **Subscriptions**
+	- 오랫동안 지속되는 GraphQl의 read operation
+	- http가 아니고 websocket 프로토콜 기반으로 사용
+	- apollo server에 기본적으로 **`PubSub`** 가 내장 되어있지만 교육용에 적당, 규모가 큰 실제 상품은 **`RedisPubSub`** 와 같은 다른 pubsub 이용
+	- 기본 사용법(미들웨어 사용)
+	```javascript
+	import { PubSub, gql } from 'apollo-server';
+	import {ApolloServer} from "apollo-server-express"
+	import http from "http";
+	import express from "express";
+	
+	
+	const pubsub = new PubSub();
+	const PORT = 4000;
+	
+	// Schema definition
+	const typeDefs = gql`
+		 type Query {
+			currentNumber: Int
+		}
+
+		 type Subscription {
+			numberIncremented: Int
+		}
+	`;
+
+	// Resolver map
+	const resolvers = {
+		Query: {
+			currentNumber() {
+				return currentNumber;
+			}
+		},
+		Subscription: {
+			numberIncremented: {
+				//asyncIterator : trigger들을 listen해줌, trigger는 String이다.
+				subscribe: () => pubsub.asyncIterator(['NUMBER_INCREMENTED']),
+			},
+		}
+	};
+	
+	const apollo = new ApolloServer({
+  	typeDefs,
+  	resolvers,
+  	subscriptions: {
+			path: '/subscriptions',
+			onConnect: (connectionParams, webSocket, context) => {
+				console.log('Client connected');
+			},
+			onDisconnect: (webSocket, context) => {
+				console.log('Client disconnected')
+			},
+  	},
+	});
+	
+	const app = express();
+	apollo.applyMiddleware({ app });
+	
+
+	const httpServer = http.createServer(app);
+	apollo.installSubscriptionHandlers(httpServer);
+
+	httpServer.listen(PORT, () => {
+			console.log(`Server is running on http://localhost:${PORT}`);
+	});
+	
+	let currentNumber = 0;
+	function incrementNumber() {
+		currentNumber++;
+		pubsub.publish('NUMBER_INCREMENTED', { numberIncremented: currentNumber });
+		setTimeout(incrementNumber, 1000);
+	}
+	incrementNumber();
+	
+	```
 
 ## Prisma
 
