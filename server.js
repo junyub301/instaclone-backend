@@ -40,7 +40,6 @@ const apollo = new ApolloServer({
 const app = express();
 app.use(logger("tiny"));
 apollo.applyMiddleware({ app });
-apollo.installSubscriptionHandlers(app);
 app.use("/static", express.static("uploads"));
 
 const httpServer = http.createServer(app);
