@@ -211,6 +211,33 @@ server.listen().then(({ url }) => {
 	incrementNumber();
 	
 	```
+	- **filtering Subscription**
+	```javascript
+	...
+	
+	// Resolver map
+	const resolvers = {
+		Query: {
+			currentNumber() {
+				return currentNumber;
+			}
+		},
+		Subscription: {
+			numberIncremented: {
+				subscribe: withFilter(
+					() => pubsub.asyncIterator(['NUMBER_INCREMENTED']),
+					(payload, variables) => {
+						return true;
+					}
+			},
+		}
+	};
+	
+	...
+	
+	```
+	
+
 
 ## Prisma
 
