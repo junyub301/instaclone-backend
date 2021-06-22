@@ -178,9 +178,9 @@ server.listen().then(({ url }) => {
 	};
 	
 	const apollo = new ApolloServer({
-  	typeDefs,
-  	resolvers,
-  	subscriptions: {
+		typeDefs,
+		resolvers,
+		subscriptions : {
 			path: '/subscriptions',
 			onConnect: (connectionParams, webSocket, context) => {
 				console.log('Client connected');
