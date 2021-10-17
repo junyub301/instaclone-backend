@@ -3,7 +3,7 @@ import client from "../../client";
 
 export default {
     Mutation: {
-        toggleLike: protectedResolver(async (_, { id }, { loggedInUser }) => {
+        toggleSave: protectedResolver(async (_, { id }, { loggedInUser }) => {
             const photo = await client.photo.findUnique({
                 where: { id },
             });
@@ -13,21 +13,21 @@ export default {
                     error: "Photo not found",
                 };
             }
-            const likeWhere = {
+            const saveWhere = {
                 photoId_userId: {
                     userId: loggedInUser.id,
                     photoId: id,
                 },
             };
-            const like = await client.like.findUnique({
-                where: likeWhere,
+            const save = await client.save.findUnique({
+                where: saveWhere,
             });
-            if (like) {
-                await client.like.delete({
-                    where: likeWhere,
+            if (save) {
+                await client.save.delete({
+                    where: saveWhere,
                 });
             } else {
-                await client.like.create({
+                await client.save.create({
                     data: {
                         user: {
                             connect: {
