@@ -56,4 +56,9 @@ export default {
         totalPhotos: ({ id }) =>
             client.photo.count({ where: { hashtags: { some: { id } } } }),
     },
+    Save: {
+        photos: ({ id }, { page }, { loggedInUser }) => {
+            return client.save.findUnique({ where: { id } }).photos();
+        },
+    },
 };

@@ -6,6 +6,13 @@ export default {
         toggleSave: protectedResolver(async (_, { id }, { loggedInUser }) => {
             const photo = await client.photo.findUnique({
                 where: { id },
+                include: {
+                    saves: {
+                        select: {
+                            userName: true,
+                        },
+                    },
+                },
             });
             if (!photo) {
                 return {
@@ -13,7 +20,23 @@ export default {
                     error: "Photo not found",
                 };
             }
-            const saveWhere = {
+            console.log(photo);
+            await client.photo.update({
+                where: {
+                    id,
+                },
+                data: {
+                    saves: {
+                        disconnect: photo.saves,
+                        connectOrCreate: {
+                            where: { userName: loggedInUser.username },
+                            create: { userName: loggedInUser.username },
+                        },
+                    },
+                },
+            });
+
+            /*  const saveWhere = {
                 photoId_userId: {
                     userId: loggedInUser.id,
                     photoId: id,
@@ -41,7 +64,7 @@ export default {
                         },
                     },
                 });
-            }
+            } */
             return {
                 ok: true,
             };

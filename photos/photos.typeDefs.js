@@ -14,6 +14,7 @@ export default gql`
         updatedAt: String!
         isMine: Boolean!
         isLiked: Boolean!
+        saves: [Save]
     }
 
     type Hashtag {
@@ -28,6 +29,13 @@ export default gql`
     type Like {
         id: Int!
         photo: Photo!
+        createdAt: String!
+        updatedAt: String!
+    }
+
+    type Save {
+        id: Int!
+        photos: [Photo]
         createdAt: String!
         updatedAt: String!
     }
