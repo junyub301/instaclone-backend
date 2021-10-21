@@ -2,7 +2,7 @@ import client from "../../client";
 
 export default {
     Query: {
-        seePhothSaves: (_, { username }) =>
-            client.save.findUnique({ where: { userName: username } }),
+        seePhothSaves: (_, { id }) =>
+            client.save.findMany({ where: { userId: id } }),
     },
 };

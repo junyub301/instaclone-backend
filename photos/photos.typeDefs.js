@@ -35,7 +35,7 @@ export default gql`
 
     type Save {
         id: Int!
-        photos: [Photo]
+        photo: Photo!
         createdAt: String!
         updatedAt: String!
     }
