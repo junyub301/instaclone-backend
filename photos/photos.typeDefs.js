@@ -14,7 +14,7 @@ export default gql`
         updatedAt: String!
         isMine: Boolean!
         isLiked: Boolean!
-        saves: [Save]
+        isSaved: Boolean!
     }
 
     type Hashtag {

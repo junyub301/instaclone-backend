@@ -48,7 +48,28 @@ export default {
             }
             return false;
         },
+        isSaved: async ({ id }, _, { loggedInUser }) => {
+            if (!loggedInUser) {
+                return false;
+            }
+            const ok = await client.save.findUnique({
+                where: {
+                    photoId_userId: {
+                        photoId: id,
+                        userId: loggedInUser.id,
+                    },
+                },
+                select: {
+                    id: true,
+                },
+            });
+            if (ok) {
+                return true;
+            }
+            return false;
+        },
     },
+
     Hashtag: {
         photos: ({ id }, { page }, { loggedInUser }) => {
             return client.hashtag.findUnique({ where: { id } }).photos();
